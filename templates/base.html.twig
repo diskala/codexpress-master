@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}{% endblock %}
+			• CodeXpress</title>
+		<link rel="icon" href={{ asset('images/favicon.png') }}>
+		<link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+		<link rel="stylesheet" href={{ asset('style.css') }}>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<nav>
+			<a href={{ path('app_page') }}>
+				<img src={{ asset('images/logo-codexpress.svg') }} width="300" alt="CodeXpress Partage de code">
+			</a>
+			<div>
+				Avec CodeXpress, partagez votre code 
+				<span {{ stimulus_controller('symfony/ux-typed', { strings: [ 'en toute simplicité !', 'avec une communauté.', 'vous même.',], loop: true, showCursor: true, cursorChar: '|', } ) }}></span>
+			</div>
+			{% if is_granted('ROLE_ADMIN') %}
+				<a class="green-pill" href={{ path('admin')}}>Administration de l'application</a>
+			{% endif %}
+		</nav>
+		<div class="container animate__animated animate__fadeIn"> {% block body %}{% endblock %}
+			</div>
+			<footer>
+				&copy; {{ 'now'|date('Y') }} CodeXpress
+				{% if is_granted('ROLE_USER') %}
+					<a class="yellow-pill" href={{ path('app_logout')}}>Déconnexion</a>
+				{% endif %}
+			</footer>
+			<script src={{ asset('main.js') }}></script>
+		</body>
+	</html>

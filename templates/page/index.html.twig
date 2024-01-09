@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord
+{% endblock %}
+
+{% block body %}
+{# Récupération des messages flash #}
+{% for label, messages in app.flashes %}
+	{% for message in messages %}
+		<div class="alert alert-{{ label }}">
+			{{ message }}
+		</div>
+	{% endfor %}
+{% endfor %}
+
+<div class="row">
+	{% for item in snippets %}
+		<div class="card col-4 col">
+			<div class="card-body">
+				<h4 class="card-title">{{ item.title }}</h4>
+				<h5 class="card-subtitle">{{ item.user.username }}</h5>
+				<p class="card-text">{{ item.content|slice(0,80) }}</p>
+				<p class="card-text">{{ item.createdAt|date('d/m/Y') }}</p>
+				<a class="paper-btn" href={{ path('show_code', { id: item.id }) }}>Voir</a>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+	<div class="row flex-center">
+		{{ knp_pagination_render(snippets) }}
+	</div>
+
+{% endblock %}
